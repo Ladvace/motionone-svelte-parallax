@@ -23,7 +23,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"gsap": "^3.12.2",
 		"motion": "^10.16.4"
 	}
 }
