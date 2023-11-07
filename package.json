@@ -23,6 +23,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@studio-freight/lenis": "^1.0.27",
 		"motion": "^10.16.4"
 	}
 }

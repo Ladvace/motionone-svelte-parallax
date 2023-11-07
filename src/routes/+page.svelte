@@ -1,10 +1,11 @@
 <script lang="ts">
   import "../style.css";
   import { onMount } from "svelte";
-  import { ScrollOffset, animate, scroll, timeline } from "motion";
+  import { scroll, timeline } from "motion";
   import sky from "$lib/assets/sky.png";
   import mid from "$lib/assets/mid.png";
   import fore from "$lib/assets/fore.png";
+  import Lenis from "@studio-freight/lenis";
 
   export const ParallaxDepth = {
     sky: "sky",
@@ -15,7 +16,7 @@
   const images = [
     { src: sky, depth: ParallaxDepth.sky, zIndex: 0 },
     { src: mid, depth: ParallaxDepth.mid, zIndex: 1 },
-    { src: fore, depth: ParallaxDepth.fore, zIndex: 2 },
+    { src: fore, depth: ParallaxDepth.fore, zIndex: 3 },
   ];
 
   onMount(() => {
@@ -49,29 +50,46 @@
       [
         ".depth-sky",
         {
-          transform: `translateY(${-(height * 0.25)}px)`,
+          transform: `translateY(${-(height * 0.2)}px)`,
           ease: "none",
         },
         {
           transform: `translateY(0)`,
         },
+        { at: "<" },
       ],
     ];
 
-    images.forEach((image) => {
+    images.forEach(() => {
       scroll(timeline(sequence as any), {
         target: container,
         offset: ["start start", "end end"],
       });
     });
   });
+
+  onMount(() => {
+    const lenis = new Lenis();
+
+    lenis.on("scroll", (e) => {
+      console.log(e);
+    });
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+  });
 </script>
 
 <main>
   <header
     id="header-container"
-    class="h-screen xl:h-[200vh] w-screen overflow-hidden bg-white relative"
+    class="h-screen xl:h-[150vh] w-screen overflow-hidden bg-white relative"
   >
+    <h1 class="avsolute z-[2] absolute top-[35%] left-1/2 -translate-x-1/2 text-4xl font-bold text-white">Infinite</h1>
     {#each images as image}
       <div
         class={`image-container depth-${image.depth}`}
