@@ -6,6 +6,7 @@
   import mid from "$lib/assets/mid.png";
   import fore from "$lib/assets/fore.png";
   import Lenis from "@studio-freight/lenis";
+  import Marquee from "$lib/components/marquee.svelte";
 
   export const ParallaxDepth = {
     sky: "sky",
@@ -25,13 +26,17 @@
 
     const height = container.offsetHeight / 2;
 
-    animate("#loader", { opacity: [1, 0] }, { duration: 0.4 });
+    animate(
+      "#loader",
+      { opacity: [1, 0], pointerEvents: "none" },
+      { duration: 0.4 }
+    );
 
     const sequence = [
       [
         ".depth-fore",
         {
-          transform: `translateY(${-(height * 0.40)}px)`,
+          transform: `translateY(${-(height * 0.4)}px)`,
           ease: "none",
         },
         {
@@ -41,26 +46,25 @@
       [
         ".depth-mid",
         {
-          transform: `translateY(${-(height * 0.30)}px)`,
+          transform: `translateY(${-(height * 0.3)}px)`,
           ease: "none",
         },
         {
           transform: `translateY(0)`,
         },
-        { at: "<" },
+        { at: 0 },
       ],
       [
         ".depth-sky",
         {
-          transform: `translateY(${-(height * 0.1)}px)`,
+          transform: `translateY(${height * 0.1}px)`,
           ease: "none",
         },
         {
           transform: `translateY(0)`,
         },
-        { at: "<" },
+        { at: 0 },
       ],
-      ["h1", { opacity: [1, 0] }, { at: "-1" }],
     ];
 
     images.forEach(() => {
@@ -72,9 +76,15 @@
   });
 
   onMount(() => {
+    const content = document.getElementById("content") as HTMLElement;
+
     const lenis = new Lenis({
-      lerp: 0.05,
+      lerp: 0.5,
+      easing: (x) => {
+        return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+      },
     });
+
     function raf(time: number) {
       lenis.raf(time);
       requestAnimationFrame(raf);
@@ -87,10 +97,10 @@
 <main>
   <header
     id="header-container"
-    class="h-screen xl:h-[150vh] w-screen overflow-hidden bg-white relative"
+    class="h-[80vh] xl:h-[150vh] w-screen overflow-hidden bg-white relative z-10"
   >
     <h1
-      class="absolute z-[2] top-[30%] left-1/2 -translate-x-1/2 text-5xl font-bold text-white uppercase"
+      class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-7xl font-bold text-white uppercase z-[2]"
     >
       Infinite
     </h1>
@@ -104,12 +114,40 @@
     {/each}
     <div id="fade" />
   </header>
-  <div id="content" class="h-screen bg-black" />
+  <div id="content" class="h-screen bg-black z-20 relative py-40">
+    <div
+      class="rotate-[10deg] text-white overflow-hidden font-bold text-5xl bg-orange-600 py-4 box whitespace-nowrap"
+    >
+      <!-- <Marquee text="very long infinite text" /> -->
+      VERY LONG INFINITE TEXTVERY LONG INFINITE TEXTVERY LONG INFINITE TEXTVERY LONG
+      INFINITE TEXTVERY LONG INFINITE TEXTVERY LONG INFINITE TEXTVERY LONG INFINITE
+      TEXTVERY LONG INFINITE TEXTVERY LONG INFINITE TEXTVERY LONG INFINITE TEXTVERY
+      LONG INFINITE TEXTVERY LONG INFINITE TEXTVERY LONG INFINITE TEXTVERY LONG INFINITE
+      TEXTVERY LONG INFINITE TEXTVERY LONG INFINITE TEXTVERY LONG INFINITE TEXTVERY
+      LONG INFINITE TEXTVERY LONG INFINITE TEXTVERY LONG INFINITE TEXT
+    </div>
+    <div
+      class="rotate-[-10deg] text-white overflow-hidden font-bold text-5xl bg-orange-600 py-4 box whitespace-nowrap"
+    >
+      <!-- <Marquee text="very long infinite text" /> -->
+      VERY LONG INFINITE TEXTVERY LONG INFINITE TEXTVERY LONG INFINITE TEXTVERY LONG
+      INFINITE TEXTVERY LONG INFINITE TEXTVERY LONG INFINITE TEXTVERY LONG INFINITE
+      TEXTVERY LONG INFINITE TEXTVERY LONG INFINITE TEXTVERY LONG INFINITE TEXTVERY
+      LONG INFINITE TEXTVERY LONG INFINITE TEXTVERY LONG INFINITE TEXTVERY LONG INFINITE
+      TEXTVERY LONG INFINITE TEXTVERY LONG INFINITE TEXTVERY LONG INFINITE TEXTVERY
+      LONG INFINITE TEXTVERY LONG INFINITE TEXTVERY LONG INFINITE TEXT
+    </div>
+  </div>
 </main>
 
 <style>
   :global(*) {
     overscroll-behavior-y: none;
+    overscroll-behavior-x: none;
+  }
+
+  img {
+    user-drag: none;
   }
 
   .image-container {

@@ -1,3 +1,63 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+  font-family: "Neco";
+}
+
+@font-face {
+  font-family: "Neco";
+  src: url("/fonts/Neco-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Neco";
+  src: url("/fonts/Neco-Italic.otf") format("opentype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Neco";
+  src: url("/fonts/Neco-Bold.otf") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Neco";
+  src: url("/fonts/Neco-BoldItalic.otf") format("opentype");
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Neco";
+  src: url("/fonts/Neco-Black.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Neco";
+  src: url("/fonts/Neco-BlackItalic.otf") format("opentype");
+  font-weight: 900;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Neco";
+  src: url("/fonts/Neco-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Neco";
+  src: url("/fonts/Neco-MediumItalic.otf") format("opentype");
+  font-weight: 500;
+  font-style: italic;
+}
