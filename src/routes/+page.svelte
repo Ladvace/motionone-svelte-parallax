@@ -1,7 +1,7 @@
 <script lang="ts">
   import "../style.css";
   import { onMount } from "svelte";
-  import { scroll, timeline } from "motion";
+  import { animate, scroll, timeline } from "motion";
   import sky from "$lib/assets/sky.png";
   import mid from "$lib/assets/mid.png";
   import fore from "$lib/assets/fore.png";
@@ -25,11 +25,13 @@
 
     const height = container.offsetHeight / 2;
 
+    animate("#loader", { opacity: [1, 0] }, { duration: 0.4 });
+
     const sequence = [
       [
         ".depth-fore",
         {
-          transform: `translateY(${-(height * 0.45)}px)`,
+          transform: `translateY(${-(height * 0.40)}px)`,
           ease: "none",
         },
         {
@@ -39,7 +41,7 @@
       [
         ".depth-mid",
         {
-          transform: `translateY(${-(height * 0.35)}px)`,
+          transform: `translateY(${-(height * 0.30)}px)`,
           ease: "none",
         },
         {
@@ -50,7 +52,7 @@
       [
         ".depth-sky",
         {
-          transform: `translateY(${-(height * 0.2)}px)`,
+          transform: `translateY(${-(height * 0.1)}px)`,
           ease: "none",
         },
         {
@@ -58,6 +60,7 @@
         },
         { at: "<" },
       ],
+      ["h1", { opacity: [1, 0] }, { at: "-1" }],
     ];
 
     images.forEach(() => {
@@ -69,27 +72,28 @@
   });
 
   onMount(() => {
-    const lenis = new Lenis();
-
-    lenis.on("scroll", (e) => {
-      console.log(e);
+    const lenis = new Lenis({
+      lerp: 0.05,
     });
-
     function raf(time: number) {
       lenis.raf(time);
       requestAnimationFrame(raf);
     }
-
     requestAnimationFrame(raf);
   });
 </script>
 
+<div id="loader" class="w-screen h-screen fixed bg-[#E0B4AA] z-50" />
 <main>
   <header
     id="header-container"
     class="h-screen xl:h-[150vh] w-screen overflow-hidden bg-white relative"
   >
-    <h1 class="avsolute z-[2] absolute top-[35%] left-1/2 -translate-x-1/2 text-4xl font-bold text-white">Infinite</h1>
+    <h1
+      class="absolute z-[2] top-[30%] left-1/2 -translate-x-1/2 text-5xl font-bold text-white uppercase"
+    >
+      Infinite
+    </h1>
     {#each images as image}
       <div
         class={`image-container depth-${image.depth}`}
@@ -100,7 +104,7 @@
     {/each}
     <div id="fade" />
   </header>
-  <div class="h-screen bg-black" />
+  <div id="content" class="h-screen bg-black" />
 </main>
 
 <style>
